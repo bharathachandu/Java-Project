@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacy Invoice</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .invoice-header, .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .invoice-header div, .invoice-details div {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .invoice-title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #006b5d;
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .total-section {
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+            margin-top: 20px;
+        }
+
+        .invoice-total {
+            text-align: right;
+            font-size: 22px;
+            font-weight: bold;
+            color: #d9534f;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="invoice-container">
+    <div class="header">INVOICE</div>
+
+    <div class="invoice-header">
+        <div>
+            <p><strong>Invoice No:</strong> <span th:text="${invoiceNumber}"></span></p>
+            <p><strong>Date of Issue:</strong> <span th:text="${issueDate}"></span></p>
+        </div>
+        <div>
+            <p><strong><span th:text="${user.company_name}"></span></strong></p>
+            <p><span th:text="${user.address}"></span></p>
+            <p>Ph: <span th:text="${user.number}"></span> | Email: <span th:text="${user.email}"></span></p>
+        </div>
+    </div>
+
+    <div class="invoice-details">
+        <div>
+            <p><strong>Billed to:</strong></p>
+            <p><span th:text="${user.contact_person}"></span></p>
+            <p><span th:text="${user.address}"></span></p>
+        </div>
+    </div>
+
+    <div class="invoice-title">Receipt</div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Sr.</th>
+            <th>HSN Code</th>
+            <th>Description</th>
+            <th>Pack</th>
+            <th>Batch No.</th>
+            <th>Exp. Date</th>
+            <th>Qty</th>
+            <th>MRP</th>
+            <th>Rate</th>
+            <th>GST%</th>
+            <th>Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item, index : ${invoiceItems}">
+            <td th:text="${index.index + 1}"></td>
+            <td th:text="${item.hsn}"></td>
+            <td th:text="${item.product_name}"></td>
+            <td th:text="${item.pack}"></td>
+            <td th:text="${item.batch_no}"></td>
+            <td th:text="${item.exp_date}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.mrp}"></td>
+            <td th:text="${item.rate}"></td>
+            <td th:text="${item.gst}"></td>
+            <td th:text="${item.totalAmount}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <div class="invoice-total">Invoice Total: ₹<span th:text="${final}"></span></div>
+
+    <div class="footer">
+        <p>Bank Details: <span th:text="${bank}"></span></p>
+        <p>Advance Payment before Delivery.</p>
+    </div>
+</div>
+</body>
+</html>
